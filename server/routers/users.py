@@ -1,6 +1,6 @@
 from typing import Any
 from fastapi import APIRouter, HTTPException
-from .database import supabase
+from database import supabase
 
 router = APIRouter(
     tags=["users"]
