@@ -83,9 +83,9 @@ const documentUtils = {
     return diffInDays < 7
       ? `${diffInDays}d ago`
       : new Date(dateString).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        });
+        month: "short",
+        day: "numeric",
+      });
   },
 
   getIcon: (doc: ProjectDocument) => {
@@ -101,7 +101,7 @@ const documentUtils = {
   },
 
   getDisplayName: (doc: ProjectDocument) => {
-    if (!doc.source_url) return doc.filename;
+    if (!doc.source_url) return doc.file_name;
     try {
       const url = new URL(doc.source_url);
       return `${url.hostname}${url.pathname}`;
@@ -193,11 +193,10 @@ const StatusAlert = ({
   message: string;
 }) => (
   <div
-    className={`border rounded-lg p-3 backdrop-blur-sm ${
-      type === "error"
+    className={`border rounded-lg p-3 backdrop-blur-sm ${type === "error"
         ? "bg-red-500/5 border-red-500/10"
         : "bg-blue-500/5 border-blue-500/10"
-    }`}
+      }`}
   >
     <div className="flex items-center gap-3">
       {type === "error" ? (
@@ -206,9 +205,8 @@ const StatusAlert = ({
         <div className="w-3 h-3 border border-blue-400 border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
       )}
       <span
-        className={`text-sm ${
-          type === "error" ? "text-red-300" : "text-blue-300"
-        }`}
+        className={`text-sm ${type === "error" ? "text-red-300" : "text-blue-300"
+          }`}
       >
         {message}
       </span>
@@ -352,21 +350,19 @@ export function KnowledgeBaseSidebar({
           <button
             key={tab.id}
             onClick={() => onSetActiveTab(tab.id as "documents" | "settings")}
-            className={`flex-1 py-3 px-4 text-sm font-medium border-b-2 transition-all duration-200 flex items-center justify-center gap-2 ${
-              activeTab === tab.id
+            className={`flex-1 py-3 px-4 text-sm font-medium border-b-2 transition-all duration-200 flex items-center justify-center gap-2 ${activeTab === tab.id
                 ? "border-blue-400 text-blue-400 bg-blue-500/5"
                 : "border-transparent text-gray-400 hover:text-gray-300 hover:bg-[#2a2a2a]"
-            }`}
+              }`}
           >
             <tab.icon size={14} />
             <span>{tab.label}</span>
             {tab.badge !== undefined && tab.badge > 0 && (
               <span
-                className={`text-xs px-1.5 py-0.5 rounded-full ${
-                  activeTab === tab.id
+                className={`text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab.id
                     ? "bg-blue-400/20 text-blue-300"
                     : "bg-gray-600 text-gray-400"
-                }`}
+                  }`}
               >
                 {tab.badge}
               </span>
@@ -389,11 +385,10 @@ export function KnowledgeBaseSidebar({
               {/* File Upload */}
               <div
                 {...getRootProps()}
-                className={`border border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${
-                  isDragActive
+                className={`border border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${isDragActive
                     ? "border-gray-600 bg-[#252525]"
                     : "border-gray-700 hover:border-gray-600 bg-[#202020] hover:bg-[#252525]"
-                }`}
+                  }`}
               >
                 <input {...getInputProps()} />
                 <div className="flex flex-col items-center gap-3">
@@ -556,9 +551,8 @@ export function KnowledgeBaseSidebar({
 
             {projectSettings ? (
               <div
-                className={`space-y-8 ${
-                  settingsLoading ? "opacity-50 pointer-events-none" : ""
-                }`}
+                className={`space-y-8 ${settingsLoading ? "opacity-50 pointer-events-none" : ""
+                  }`}
               >
                 {/* Embedding Model */}
                 <section className="space-y-4">
@@ -609,11 +603,10 @@ export function KnowledgeBaseSidebar({
                     {STRATEGY_OPTIONS.map((strategy) => (
                       <label
                         key={strategy.value}
-                        className={`block p-3 rounded-lg border cursor-pointer transition-colors ${
-                          projectSettings.rag_strategy === strategy.value
+                        className={`block p-3 rounded-lg border cursor-pointer transition-colors ${projectSettings.rag_strategy === strategy.value
                             ? "border-gray-600 bg-[#252525]"
                             : "border-gray-800 bg-[#202020] hover:border-gray-700"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-3">
                           <input
@@ -795,11 +788,10 @@ export function KnowledgeBaseSidebar({
                     {AGENT_MODE_OPTIONS.map((mode) => (
                       <label
                         key={mode.value}
-                        className={`block p-3 rounded-lg border cursor-pointer transition-colors ${
-                          projectSettings.agent_type === mode.value
+                        className={`block p-3 rounded-lg border cursor-pointer transition-colors ${projectSettings.agent_type === mode.value
                             ? "border-gray-600 bg-[#252525]"
                             : "border-gray-800 bg-[#202020] hover:border-gray-700"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-3">
                           <input

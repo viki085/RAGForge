@@ -22,7 +22,7 @@ export interface Message {
     chat_id: string;
     clerk_id: string;
     citations?: Array<{
-        filename: string;
+        file_name: string;
         page: number;
     }>;
 }
@@ -51,7 +51,7 @@ export interface ProjectSettings {
 export interface ProjectDocument {
     id: string;
     project_id: string;
-    filename: string;
+    file_name: string;
     s3_key: string;
     file_size: number;
     file_type: string;
