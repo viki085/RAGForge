@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from database import supabase, s3_client, BUCKET_NAME
 from auth import get_current_user
 import uuid
+from tasks import process_document
 
 router = APIRouter(
     tags=["files"]
@@ -111,8 +112,13 @@ async def confirm_file_upload(
             raise HTTPException(status_code=404, detail="Document not found or access denied")
 
         # Start background preprocessing of the current file with Celery
+        task = process_document.delay(document["id"])
 
 
+        # store task_id in database
+        supabase.table("project_documents").update({
+            "task_id": task.id
+        }).eq("id", document["id"]).execute()   
 
         # Return JSON 
         return {
@@ -122,6 +128,7 @@ async def confirm_file_upload(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail = f"Failed to confirm upload: {str(e)}")
+
 
 class UrlAddRequest(BaseModel):
     url: str
@@ -156,12 +163,14 @@ async def add_website_url(
             raise HTTPException(status_code=500, detail="Failed to create URL record")
 
         # Start background processing
+        task = process_document.delay(result.data[0]["id"])
+
+        # store task_id in database
+        supabase.table("project_documents").update({
+            "task_id": task.id
+        }).eq("id", result.data[0]["id"]).execute()   
 
 
-
-
-
-        
         return {
             "message": "URL added successfully, processing started", 
             "data": result.data[0]
@@ -216,3 +225,33 @@ async def delete_file(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete file: {str(e)}")
+
+@router.get("/api/projects/{project_id}/files/{file_id}/chunks")
+async def get_document_chunks(
+    project_id: str,
+    file_id: str,
+    clerk_id: str = Depends(get_current_user)
+):
+    try:
+        project_result = supabase.table('projects').select('id').eq('id', project_id).eq('clerk_id', clerk_id).execute()
+        
+        if not project_result.data:
+            raise HTTPException(status_code=404, detail="Project not found or access denied")
+        
+        doc_result = supabase.table('project_documents').select('id').eq('id', file_id).eq('project_id', project_id).execute()
+        
+        if not doc_result.data:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        chunks_result = supabase.table('document_chunks').select('*').eq('document_id', file_id).order('chunk_index').execute()
+        
+        return {
+            "message": "Document chunks retrieved successfully",
+            "data": chunks_result.data or []
+        }
+
+    except Exception as e:
+        print(f"ERROR getting chunks: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get document chunks: {str(e)}")
+
+        

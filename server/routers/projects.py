@@ -170,6 +170,8 @@ async def get_project_settings(
         }
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail = f"Failed to get project settings: {str(e)}")
 
 
