@@ -10,7 +10,7 @@ interface Message {
   chat_id: string;
   clerk_id: string;
   citations?: Array<{
-    filename: string;
+    file_name: string;
     page: number;
   }>;
 }
@@ -95,7 +95,7 @@ export function MessageList({
                               {/* Citation Info */}
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-gray-200 truncate">
-                                  {citation.filename}
+                                  {citation.file_name}
                                 </p>
                                 <p className="text-xs text-gray-400 mt-0.5">
                                   Page {citation.page}

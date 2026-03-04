@@ -8,7 +8,7 @@ interface Message {
   chat_id: string;
   clerk_id: string;
   citations?: Array<{
-    filename: string;
+    file_name: string;
     page: number;
   }>;
 }
@@ -39,11 +39,10 @@ export function MessageItem({ message, onFeedback }: MessageItemProps) {
 
           {/* Message Bubble */}
           <div
-            className={`rounded-lg p-4 border transition-colors ${
-              isUser
+            className={`rounded-lg p-4 border transition-colors ${isUser
                 ? "bg-white text-gray-900 border-gray-300"
                 : "bg-[#202020] text-gray-200 border-gray-800 hover:border-gray-700"
-            }`}
+              }`}
           >
             <p className="whitespace-pre-wrap leading-relaxed text-sm">
               {message.content}
@@ -86,9 +85,8 @@ export function MessageItem({ message, onFeedback }: MessageItemProps) {
 
         {/* Timestamp */}
         <div
-          className={`flex items-center gap-2 mt-2 px-1 ${
-            isUser ? "justify-end" : "justify-start ml-10"
-          }`}
+          className={`flex items-center gap-2 mt-2 px-1 ${isUser ? "justify-end" : "justify-start ml-10"
+            }`}
         >
           <span className="text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
             {time}
