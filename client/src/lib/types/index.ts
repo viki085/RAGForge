@@ -22,7 +22,7 @@ export interface Message {
     chat_id: string;
     clerk_id: string;
     citations?: Array<{
-        file_name: string;
+        filename: string;
         page: number;
     }>;
 }

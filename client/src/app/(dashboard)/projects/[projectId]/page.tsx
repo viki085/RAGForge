@@ -124,7 +124,7 @@ function ProjectPage({ params }: ProjectPageProps) {
         }, 2000);
 
         return () => clearInterval(pollInterval);
-    }, [data.documents, projectId, getToken]);
+    }, [projectId, getToken]);
     /*
     ! User Interation functions
   
